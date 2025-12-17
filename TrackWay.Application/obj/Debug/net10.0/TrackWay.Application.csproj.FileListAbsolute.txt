@@ -1,0 +1,15 @@
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\bin\Debug\net10.0\TrackWay.Application.deps.json
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\bin\Debug\net10.0\TrackWay.Application.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\bin\Debug\net10.0\TrackWay.Application.pdb
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\bin\Debug\net10.0\TrackWay.Domain.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\bin\Debug\net10.0\TrackWay.Domain.pdb
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.csproj.AssemblyReference.cache
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.AssemblyInfoInputs.cache
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.AssemblyInfo.cs
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.csproj.CoreCompileInputs.cache
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.383D3AF0.Up2Date
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\refint\TrackWay.Application.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.pdb
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\ref\TrackWay.Application.dll

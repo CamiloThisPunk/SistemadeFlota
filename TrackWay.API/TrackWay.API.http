@@ -1,0 +1,12 @@
+@TrackWay.API_HostAddress = http://localhost:5112
+
+### Login
+POST {{TrackWay.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@trackway.com",
+    "password": "Admin123!"
+}
+
+###

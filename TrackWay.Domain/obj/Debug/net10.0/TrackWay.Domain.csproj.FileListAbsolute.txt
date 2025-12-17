@@ -1,0 +1,12 @@
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\bin\Debug\net10.0\TrackWay.Domain.deps.json
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\bin\Debug\net10.0\TrackWay.Domain.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\bin\Debug\net10.0\TrackWay.Domain.pdb
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.csproj.AssemblyReference.cache
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.AssemblyInfoInputs.cache
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.AssemblyInfo.cs
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\refint\TrackWay.Domain.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.pdb
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\ref\TrackWay.Domain.dll

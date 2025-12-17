@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "dgSpecHash": "havqwAzkyF8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Asus TUF\\Desktop\\SistemadeFlota\\TrackWay.Application\\TrackWay.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.0-preview.6.25358.103\\microsoft.entityframeworkcore.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.0-preview.6.25358.103\\microsoft.entityframeworkcore.abstractions.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\10.0.0-preview.6.25358.103\\microsoft.extensions.caching.abstractions.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.caching.memory\\10.0.0-preview.6.25358.103\\microsoft.extensions.caching.memory.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\10.0.0-preview.6.25358.103\\microsoft.extensions.dependencyinjection.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0-preview.6.25358.103\\microsoft.extensions.dependencyinjection.abstractions.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.logging\\10.0.0-preview.6.25358.103\\microsoft.extensions.logging.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0-preview.6.25358.103\\microsoft.extensions.logging.abstractions.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.options\\10.0.0-preview.6.25358.103\\microsoft.extensions.options.10.0.0-preview.6.25358.103.nupkg.sha512",
+    "C:\\Users\\Asus TUF\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.0-preview.6.25358.103\\microsoft.extensions.primitives.10.0.0-preview.6.25358.103.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "TrackWay.Application depende de Microsoft.EntityFrameworkCore (>= 10.0.0-preview.6.25313.1), pero no se encontró Microsoft.EntityFrameworkCore 10.0.0-preview.6.25313.1. Microsoft.EntityFrameworkCore 10.0.0-preview.6.25358.103 se resolvió en su lugar.",
+      "projectPath": "C:\\Users\\Asus TUF\\Desktop\\SistemadeFlota\\TrackWay.Application\\TrackWay.Application.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Asus TUF\\Desktop\\SistemadeFlota\\TrackWay.Application\\TrackWay.Application.csproj",
+      "libraryId": "Microsoft.EntityFrameworkCore",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}
