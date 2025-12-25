@@ -43,7 +43,8 @@
     "reports": "Reportes",
     "settings": "Configuración",
     "admin": "Administración",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "superadmin": "Panel SuperAdmin"
   },
   "dashboard": {
     "title": "Dashboard",

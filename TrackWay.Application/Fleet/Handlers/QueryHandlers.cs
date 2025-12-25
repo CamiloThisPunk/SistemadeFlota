@@ -93,10 +93,14 @@ public class GetAllDriversHandler : IRequestHandler<GetAllDriversQuery, IReadOnl
             .Where(d => d.Activo)
             .Select(d => new DriverDto(
                 d.Id,
-                d.NombreCompleto,
+                d.Nombre,
+                d.Apellidos,
+                d.Documento,
                 d.LicenciaNum,
                 d.CategoriaLicencia.ToString(),
+                d.LicenciaVencimiento,
                 d.ScoringSeguridad,
+                d.Activo,
                 d.GetAlertaLicencia().Color
             )).ToList();
     }

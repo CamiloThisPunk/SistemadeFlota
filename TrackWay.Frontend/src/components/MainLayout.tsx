@@ -21,7 +21,6 @@ import {
     useMediaQuery,
     Tooltip,
     Badge,
-    Chip,
 } from '@mui/material';
 import {
     Menu as MenuIcon,
@@ -38,6 +37,7 @@ import {
     ChevronLeft,
     Settings,
     AdminPanelSettings,
+    Business,
 } from '@mui/icons-material';
 import { useAuth, Permission, UserRole } from '../contexts/AuthContext';
 import { RoleBadge } from './AccessControl';
@@ -57,18 +57,20 @@ interface NavItem {
     path: string;
     permission?: Permission;
     roles?: UserRole[];
+    excludeRoles?: UserRole[];
     badge?: number;
 }
 
 const navItems: NavItem[] = [
-    { labelKey: 'navigation.dashboard', icon: <Dashboard />, path: '/', permission: 'dashboard:read' },
-    { labelKey: 'navigation.vehicles', icon: <DirectionsCar />, path: '/vehiculos', permission: 'vehicles:read' },
-    { labelKey: 'navigation.drivers', icon: <People />, path: '/conductores', permission: 'drivers:read' },
-    { labelKey: 'navigation.maintenance', icon: <Build />, path: '/mantenimiento', permission: 'maintenance:read' },
-    { labelKey: 'navigation.alerts', icon: <Warning />, path: '/alertas', permission: 'alerts:read', badge: 3 },
-    { labelKey: 'navigation.reports', icon: <Assessment />, path: '/reportes', permission: 'reports:read' },
-    { labelKey: 'navigation.settings', icon: <Settings />, path: '/configuracion', permission: 'settings:read' },
-    { labelKey: 'navigation.users', icon: <AdminPanelSettings />, path: '/usuarios', permission: 'users:read' },
+    { labelKey: 'navigation.dashboard', icon: <Dashboard />, path: '/', permission: 'dashboard:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.vehicles', icon: <DirectionsCar />, path: '/vehiculos', permission: 'vehicles:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.drivers', icon: <People />, path: '/conductores', permission: 'drivers:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.maintenance', icon: <Build />, path: '/mantenimiento', permission: 'maintenance:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.alerts', icon: <Warning />, path: '/alertas', permission: 'alerts:read', badge: 3, excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.reports', icon: <Assessment />, path: '/reportes', permission: 'reports:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.settings', icon: <Settings />, path: '/configuracion', permission: 'settings:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.users', icon: <AdminPanelSettings />, path: '/usuarios', permission: 'users:read', excludeRoles: ['SuperAdmin'] },
+    { labelKey: 'navigation.superadmin', icon: <Business />, path: '/superadmin', roles: ['SuperAdmin'] },
 ];
 
 const MainLayout: React.FC<MainLayoutProps> = ({ toggleTheme, isDarkMode }) => {
@@ -143,13 +145,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({ toggleTheme, isDarkMode }) => {
             <List sx={{ flex: 1, px: 1, py: 2 }}>
                 {navItems
                     .filter((item) => {
+                        // Excluir items para roles específicos (ej: SuperAdmin no ve menú regular)
+                        if (item.excludeRoles && user && item.excludeRoles.includes(user.rol)) {
+                            return false;
+                        }
+                        // Verificar por roles específicos si existe
+                        if (item.roles && item.roles.length > 0) {
+                            return hasRole(item.roles);
+                        }
                         // Verificar por permiso si existe
                         if (item.permission) {
                             return hasPermission(item.permission);
-                        }
-                        // Verificar por roles si existe
-                        if (item.roles && item.roles.length > 0) {
-                            return hasRole(item.roles);
                         }
                         return true;
                     })

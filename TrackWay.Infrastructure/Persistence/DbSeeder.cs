@@ -1,6 +1,7 @@
 using TrackWay.Domain.Entities.Auth;
 using TrackWay.Domain.Entities.Fleet;
 using TrackWay.Domain.Entities.Restaurante;
+using TrackWay.Domain.Entities.SaaS;
 using TrackWay.Domain.Enums;
 using TrackWay.Application.Auth.Handlers;
 
@@ -16,6 +17,7 @@ public static class DbSeeder
         await SeedAuthDataAsync(context, passwordHasher);
         await SeedFleetDataAsync(context);
         await SeedRestauranteDataAsync(context);
+        await SeedSaaSDataAsync(context);
     }
 
     private static async Task SeedAuthDataAsync(TrackWayDbContext context, IPasswordHasher passwordHasher)
@@ -25,7 +27,11 @@ public static class DbSeeder
         {
             var roles = new[]
             {
-                // Admin - Acceso total
+                // SuperAdmin - Acceso total al sistema SaaS (gestión de tenants)
+                Role.Create("SuperAdmin", "Super Administrador con acceso total al SaaS", 
+                    "[\"dashboard:read\",\"vehicles:read\",\"vehicles:write\",\"vehicles:delete\",\"drivers:read\",\"drivers:write\",\"drivers:delete\",\"maintenance:read\",\"maintenance:write\",\"maintenance:delete\",\"alerts:read\",\"alerts:write\",\"reports:read\",\"reports:export\",\"users:read\",\"users:write\",\"users:delete\",\"settings:read\",\"settings:write\",\"superadmin:read\",\"superadmin:write\",\"tenants:read\",\"tenants:write\",\"tenants:delete\"]"),
+                
+                // Admin - Acceso total a una empresa
                 Role.Create("Admin", "Administrador del sistema con acceso completo", 
                     "[\"dashboard:read\",\"vehicles:read\",\"vehicles:write\",\"vehicles:delete\",\"drivers:read\",\"drivers:write\",\"drivers:delete\",\"maintenance:read\",\"maintenance:write\",\"maintenance:delete\",\"alerts:read\",\"alerts:write\",\"reports:read\",\"reports:export\",\"users:read\",\"users:write\",\"users:delete\",\"settings:read\",\"settings:write\"]"),
                 
@@ -43,10 +49,20 @@ public static class DbSeeder
             };
             context.Roles.AddRange(roles);
             await context.SaveChangesAsync();
-            Console.WriteLine("✅ Roles creados: Admin, Gerente, Asistente, Chofer");
+            Console.WriteLine("✅ Roles creados: SuperAdmin, Admin, Gerente, Asistente, Chofer");
         }
         else
         {
+            // Verificar si existe el rol SuperAdmin, si no, agregarlo
+            if (!context.Roles.Any(r => r.Nombre == "SuperAdmin"))
+            {
+                var superAdminRole = Role.Create("SuperAdmin", "Super Administrador con acceso total al SaaS", 
+                    "[\"dashboard:read\",\"vehicles:read\",\"vehicles:write\",\"vehicles:delete\",\"drivers:read\",\"drivers:write\",\"drivers:delete\",\"maintenance:read\",\"maintenance:write\",\"maintenance:delete\",\"alerts:read\",\"alerts:write\",\"reports:read\",\"reports:export\",\"users:read\",\"users:write\",\"users:delete\",\"settings:read\",\"settings:write\",\"superadmin:read\",\"superadmin:write\",\"tenants:read\",\"tenants:write\",\"tenants:delete\"]");
+                context.Roles.Add(superAdminRole);
+                await context.SaveChangesAsync();
+                Console.WriteLine("✅ Rol SuperAdmin agregado");
+            }
+            
             // Verificar si existe el rol Chofer, si no, agregarlo
             if (!context.Roles.Any(r => r.Nombre == "Chofer"))
             {
@@ -61,36 +77,59 @@ public static class DbSeeder
         // Seed Users
         if (!context.Users.Any())
         {
+            var superAdminRole = context.Roles.FirstOrDefault(r => r.Nombre == "SuperAdmin");
             var adminRole = context.Roles.FirstOrDefault(r => r.Nombre == "Admin");
             var gerenteRole = context.Roles.FirstOrDefault(r => r.Nombre == "Gerente");
             var asistenteRole = context.Roles.FirstOrDefault(r => r.Nombre == "Asistente");
             var choferRole = context.Roles.FirstOrDefault(r => r.Nombre == "Chofer");
 
+            var users = new List<User>();
+
+            if (superAdminRole != null)
+            {
+                users.Add(User.Create("superadmin@trackway.com", "Super Administrador", passwordHasher.HashPassword("SuperAdmin123!"), superAdminRole.Id));
+            }
+
             if (adminRole != null && gerenteRole != null && asistenteRole != null)
             {
-                var users = new List<User>
-                {
-                    User.Create("admin@trackway.com", "Administrador Sistema", passwordHasher.HashPassword("Admin123!"), adminRole.Id),
-                    User.Create("gerente@trackway.com", "Gerente General", passwordHasher.HashPassword("Gerente123!"), gerenteRole.Id),
-                    User.Create("asistente@trackway.com", "Asistente Operaciones", passwordHasher.HashPassword("Asistente123!"), asistenteRole.Id),
-                };
+                users.Add(User.Create("admin@trackway.com", "Administrador Sistema", passwordHasher.HashPassword("Admin123!"), adminRole.Id));
+                users.Add(User.Create("gerente@trackway.com", "Gerente General", passwordHasher.HashPassword("Gerente123!"), gerenteRole.Id));
+                users.Add(User.Create("asistente@trackway.com", "Asistente Operaciones", passwordHasher.HashPassword("Asistente123!"), asistenteRole.Id));
+            }
 
-                if (choferRole != null)
-                {
-                    users.Add(User.Create("chofer@trackway.com", "Carlos García (Chofer)", passwordHasher.HashPassword("Chofer123!"), choferRole.Id));
-                }
+            if (choferRole != null)
+            {
+                users.Add(User.Create("chofer@trackway.com", "Carlos García (Chofer)", passwordHasher.HashPassword("Chofer123!"), choferRole.Id));
+            }
 
+            if (users.Any())
+            {
                 context.Users.AddRange(users);
                 await context.SaveChangesAsync();
                 Console.WriteLine("✅ Usuarios de prueba creados:");
-                Console.WriteLine("   - admin@trackway.com / Admin123!");
-                Console.WriteLine("   - gerente@trackway.com / Gerente123!");
-                Console.WriteLine("   - asistente@trackway.com / Asistente123!");
-                Console.WriteLine("   - chofer@trackway.com / Chofer123!");
+                Console.WriteLine("   - superadmin@trackway.com / SuperAdmin123! (SuperAdmin)");
+                Console.WriteLine("   - admin@trackway.com / Admin123! (Admin)");
+                Console.WriteLine("   - gerente@trackway.com / Gerente123! (Gerente)");
+                Console.WriteLine("   - asistente@trackway.com / Asistente123! (Asistente)");
+                Console.WriteLine("   - chofer@trackway.com / Chofer123! (Chofer)");
             }
         }
         else
         {
+            // Verificar si existe usuario superadmin
+            if (!context.Users.Any(u => u.Email == "superadmin@trackway.com"))
+            {
+                var superAdminRole = context.Roles.FirstOrDefault(r => r.Nombre == "SuperAdmin");
+                if (superAdminRole != null)
+                {
+                    var superAdminUser = User.Create("superadmin@trackway.com", "Super Administrador", 
+                        passwordHasher.HashPassword("SuperAdmin123!"), superAdminRole.Id);
+                    context.Users.Add(superAdminUser);
+                    await context.SaveChangesAsync();
+                    Console.WriteLine("✅ Usuario SuperAdmin agregado: superadmin@trackway.com / SuperAdmin123!");
+                }
+            }
+            
             // Verificar si existe usuario chofer
             if (!context.Users.Any(u => u.Email == "chofer@trackway.com"))
             {
@@ -214,6 +253,64 @@ public static class DbSeeder
             };
             context.Empleados.AddRange(empleados);
             await context.SaveChangesAsync();
+        }
+    }
+
+    private static async Task SeedSaaSDataAsync(TrackWayDbContext context)
+    {
+        // Seed Subscription Plans
+        if (!context.SubscriptionPlans.Any())
+        {
+            var plans = new[]
+            {
+                SubscriptionPlan.Create("Free", "Plan gratuito con funciones básicas", 0, 5, 5, PlanTier.Free, "#4CAF50"),
+                SubscriptionPlan.Create("Pro", "Plan profesional para empresas medianas", 49, 30, 50, PlanTier.Pro, "#2196F3"),
+                SubscriptionPlan.Create("Enterprise", "Plan empresarial con todas las funciones", 199, 100, 500, PlanTier.Enterprise, "#FF9800"),
+            };
+            context.SubscriptionPlans.AddRange(plans);
+            await context.SaveChangesAsync();
+            Console.WriteLine("✅ Planes de suscripción creados: Free, Pro, Enterprise");
+        }
+
+        // Seed Tenants
+        if (!context.Tenants.Any())
+        {
+            var freePlan = context.SubscriptionPlans.First(p => p.Nombre == "Free");
+            var proPlan = context.SubscriptionPlans.First(p => p.Nombre == "Pro");
+            var enterprisePlan = context.SubscriptionPlans.First(p => p.Nombre == "Enterprise");
+
+            var tenants = new[]
+            {
+                Tenant.Create("Mudanzas Perú SRL", "20567891023", "info@mudanzasperu.pe", "01-555-1234", "Av. Principal 123, Lima"),
+                Tenant.Create("Carga Pesada Corp", "20345678901", "operaciones@cargapesada.com", "01-555-5678", "Jr. Industrial 456, Callao"),
+                Tenant.Create("Logística Express EIRL", "20234567890", "admin@logisticaexpress.pe", "01-555-9012", "Calle Comercio 789, Miraflores"),
+                Tenant.Create("Distribuidora Lima Norte", "20123456789", "ventas@dislima.com", "01-555-3456", "Av. Panamericana Norte 1500"),
+                Tenant.Create("TransCargo SAC", "20678901234", "contacto@transcargo.pe", "01-555-7890", "Av. Colonial 2000, Lima"),
+            };
+
+            // Configurar datos simulados de actividad
+            tenants[0].SimularActividad(100, 450, 320);
+            tenants[1].SimularActividad(3, 5, 8);
+            tenants[2].SimularActividad(15, 10, 12);
+            tenants[3].SimularActividad(8, 25, 45);
+            tenants[4].SimularActividad(5, 20, 20);
+
+            context.Tenants.AddRange(tenants);
+            await context.SaveChangesAsync();
+
+            // Crear suscripciones
+            var subscriptions = new[]
+            {
+                TenantSubscription.Create(tenants[0].Id, enterprisePlan.Id),
+                TenantSubscription.Create(tenants[1].Id, freePlan.Id),
+                TenantSubscription.Create(tenants[2].Id, proPlan.Id),
+                TenantSubscription.Create(tenants[3].Id, proPlan.Id),
+                TenantSubscription.Create(tenants[4].Id, freePlan.Id),
+            };
+
+            context.TenantSubscriptions.AddRange(subscriptions);
+            await context.SaveChangesAsync();
+            Console.WriteLine("✅ Empresas de prueba creadas: 5 tenants con suscripciones");
         }
     }
 }

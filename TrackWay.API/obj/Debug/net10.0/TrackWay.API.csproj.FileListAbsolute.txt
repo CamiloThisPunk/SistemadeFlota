@@ -225,3 +225,4 @@ C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.API\obj\Debug\net10.0\refint\T
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.API\obj\Debug\net10.0\TrackWay.API.pdb
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.API\obj\Debug\net10.0\TrackWay.API.genruntimeconfig.cache
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.API\obj\Debug\net10.0\ref\TrackWay.API.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.API\obj\Debug\net10.0\TrackWay.API.sourcelink.json

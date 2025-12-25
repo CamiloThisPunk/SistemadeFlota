@@ -10,3 +10,4 @@ C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\Track
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\refint\TrackWay.Domain.dll
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.pdb
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\ref\TrackWay.Domain.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Domain\obj\Debug\net10.0\TrackWay.Domain.sourcelink.json

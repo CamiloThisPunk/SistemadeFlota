@@ -1,0 +1,12 @@
+﻿src/components/MainLayout.tsx(24,5): error TS6133: 'Chip' is declared but its value is never read.
+src/components/ProtectedRoute.tsx(35,35): error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'UserRole[]'.
+  Type 'string' is not assignable to type 'UserRole'.
+src/pages/DriversPage.tsx(35,5): error TS6133: 'Person' is declared but its value is never read.
+src/pages/DriversPage.tsx(45,11): error TS6133: 't' is declared but its value is never read.
+src/pages/DriversPage.tsx(285,35): error TS2339: Property 'items' does not exist on type 'ApiResponse<PagedResult<Driver>>'.
+src/pages/DriversPage.tsx(286,38): error TS2339: Property 'totalCount' does not exist on type 'ApiResponse<PagedResult<Driver>>'.
+src/pages/SuperAdminPage.tsx(12,28): error TS6133: 'Delete' is declared but its value is never read.
+src/pages/VehiclesPage.tsx(45,10): error TS6133: 'PermissionGate' is declared but its value is never read.
+src/pages/VehiclesPage.tsx(48,11): error TS6133: 't' is declared but its value is never read.
+src/pages/VehiclesPage.tsx(336,36): error TS2339: Property 'items' does not exist on type 'ApiResponse<PagedResult<Vehicle>>'.
+src/pages/VehiclesPage.tsx(337,38): error TS2339: Property 'totalCount' does not exist on type 'ApiResponse<PagedResult<Vehicle>>'.

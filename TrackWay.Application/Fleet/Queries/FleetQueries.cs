@@ -100,10 +100,14 @@ public record VehicleAlertDto(
 
 public record DriverDto(
     int Id,
-    string NombreCompleto,
-    string LicenciaNum,
+    string Nombres,
+    string Apellidos,
+    string Documento,
+    string Licencia,
     string CategoriaLicencia,
-    decimal ScoringSeguridad,
+    DateTime FechaVencimientoLicencia,
+    decimal Scoring,
+    bool Activo,
     string AlertaColor);
 
 public record DriverDetailDto(
@@ -125,10 +129,10 @@ public record DriverDetailDto(
     string AlertaSeguridad);
 
 public record DriverAlertDto(
-    int Id,
+    int DriverId,
     string NombreCompleto,
     DateTime LicenciaVencimiento,
-    int DiasRestantes,
+    int DiasParaVencimiento,
     string AlertaColor);
 
 public record DocumentoResumenDto(

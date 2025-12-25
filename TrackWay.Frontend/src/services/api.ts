@@ -205,8 +205,32 @@ export const getDriverById = (id: number) =>
 export const getDriverAlerts = (diasAlerta = 30) =>
     api.get<ApiResponse<DriverAlert[]>>(`/api/drivers/alertas/licencia?diasAlerta=${diasAlerta}`);
 
-export const createDriver = (data: Partial<Driver>) =>
-    api.post<ApiResponse<{ id: number }>>('/api/drivers', data);
+// Mapeo de categorías de licencia a valores de enum del backend
+const licenseCategoryToEnum: Record<string, number> = {
+    'AI': 1, 'AIIa': 2, 'AIIb': 3, 'AIIIa': 4,
+    'AIIIb': 5, 'AIIIc': 6, 'AIVA': 7, 'BIVB': 8,
+    // Alias adicionales del frontend
+    'BI': 1, 'BIIa': 2, 'BIIb': 3, 'BIIc': 6
+};
+
+export const createDriver = (data: Partial<Driver> & {
+    nombres?: string;
+    fechaVencimientoLicencia?: string;
+    licencia?: string;
+}) => {
+    // Mapear campos del frontend a los campos esperados por el backend
+    const backendData = {
+        nombre: data.nombres,
+        apellidos: data.apellidos,
+        documento: data.documento,
+        licenciaNum: data.licencia,
+        categoriaLicencia: licenseCategoryToEnum[data.categoriaLicencia || 'AIIa'] || 2,
+        licenciaVencimiento: data.fechaVencimientoLicencia,
+        email: data.email || '',
+        telefono: data.telefono || '',
+    };
+    return api.post<ApiResponse<{ id: number }>>('/api/drivers', backendData);
+};
 
 // Maintenance
 export const getMaintenanceOrders = (page = 1, pageSize = 10) =>

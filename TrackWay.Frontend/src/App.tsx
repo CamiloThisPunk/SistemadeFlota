@@ -12,6 +12,7 @@ import DriversPage from './pages/DriversPage';
 import MaintenancePage from './pages/MaintenancePage';
 import AlertsPage from './pages/AlertsPage';
 import ReportsPage from './pages/ReportsPage';
+import SuperAdminPage from './pages/SuperAdminPage';
 
 // Create Query Client
 const queryClient = new QueryClient({
@@ -116,6 +117,20 @@ const UnauthorizedPage = () => (
     </div>
 );
 
+// Component to redirect SuperAdmin to their panel
+import { useAuth } from './contexts/AuthContext';
+
+const SuperAdminRedirect: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { user } = useAuth();
+
+    // Si es SuperAdmin, redirigir al panel de SuperAdmin
+    if (user?.rol === 'SuperAdmin') {
+        return <Navigate to="/superadmin" replace />;
+    }
+
+    return <>{children}</>;
+};
+
 function App() {
     const [mode, setMode] = useState<'light' | 'dark'>(() => {
         const saved = localStorage.getItem('trackway_theme');
@@ -149,7 +164,7 @@ function App() {
                                     </ProtectedRoute>
                                 }
                             >
-                                <Route path="/" element={<DashboardPage />} />
+                                <Route path="/" element={<SuperAdminRedirect><DashboardPage /></SuperAdminRedirect>} />
                                 <Route path="/vehiculos" element={<VehiclesPage />} />
                                 <Route path="/conductores" element={<DriversPage />} />
                                 <Route path="/mantenimiento" element={<MaintenancePage />} />
@@ -163,6 +178,16 @@ function App() {
                                     }
                                 />
                             </Route>
+
+                            {/* SuperAdmin Panel - rutas independientes sin MainLayout */}
+                            <Route
+                                path="/superadmin"
+                                element={
+                                    <ProtectedRoute requiredRoles={['SuperAdmin', 'Admin']}>
+                                        <SuperAdminPage />
+                                    </ProtectedRoute>
+                                }
+                            />
 
                             {/* Fallback */}
                             <Route path="*" element={<Navigate to="/" replace />} />

@@ -42,10 +42,10 @@ import { useTranslation } from 'react-i18next';
 import { getVehicles, updateVehicleKm, deleteVehicle, Vehicle } from '../services/api';
 import VehicleFormDialog from '../components/VehicleFormDialog';
 import { useAuth } from '../contexts/AuthContext';
-import { PermissionGate, useModuleAccess, AccessDeniedPage } from '../components/AccessControl';
+import { useModuleAccess, AccessDeniedPage } from '../components/AccessControl';
 
 const VehiclesPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t: _t } = useTranslation();
     const theme = useTheme();
     const queryClient = useQueryClient();
     const { canRead } = useAuth();
@@ -332,9 +332,10 @@ const VehiclesPage: React.FC = () => {
     ];
 
     // Extraer datos de la respuesta (maneja diferentes estructuras de API)
-    const responseData = data?.data;
-    const vehicles = responseData?.items || responseData?.data?.items || [];
-    const totalCount = responseData?.totalCount || responseData?.data?.totalCount || vehicles.length;
+    const apiResponse = data?.data;
+    const pagedResult = apiResponse?.data;
+    const vehicles = pagedResult?.items || [];
+    const totalCount = pagedResult?.totalCount || vehicles.length;
 
     // Estadísticas rápidas
     const stats = {

@@ -13,3 +13,4 @@ C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\refint\TrackWay.Application.dll
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.pdb
 C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\ref\TrackWay.Application.dll
+C:\Users\Asus TUF\Desktop\SistemadeFlota\TrackWay.Application\obj\Debug\net10.0\TrackWay.Application.sourcelink.json

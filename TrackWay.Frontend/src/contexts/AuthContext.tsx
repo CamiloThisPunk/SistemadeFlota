@@ -2,10 +2,10 @@ import React, { createContext, useContext, useState, useEffect, ReactNode, useCa
 import api from '../services/api';
 
 // Tipos de roles disponibles
-export type UserRole = 'Admin' | 'Gerente' | 'Asistente' | 'Chofer';
+export type UserRole = 'SuperAdmin' | 'Admin' | 'Gerente' | 'Asistente' | 'Chofer';
 
 // Permisos del sistema
-export type Permission = 
+export type Permission =
     | 'dashboard:read'
     | 'vehicles:read' | 'vehicles:write' | 'vehicles:delete'
     | 'drivers:read' | 'drivers:write' | 'drivers:delete'
@@ -13,10 +13,24 @@ export type Permission =
     | 'alerts:read' | 'alerts:write'
     | 'reports:read' | 'reports:export'
     | 'users:read' | 'users:write' | 'users:delete'
-    | 'settings:read' | 'settings:write';
+    | 'settings:read' | 'settings:write'
+    | 'superadmin:read' | 'superadmin:write'
+    | 'tenants:read' | 'tenants:write' | 'tenants:delete';
 
 // Mapeo de permisos por rol
 export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
+    SuperAdmin: [
+        'dashboard:read',
+        'vehicles:read', 'vehicles:write', 'vehicles:delete',
+        'drivers:read', 'drivers:write', 'drivers:delete',
+        'maintenance:read', 'maintenance:write', 'maintenance:delete',
+        'alerts:read', 'alerts:write',
+        'reports:read', 'reports:export',
+        'users:read', 'users:write', 'users:delete',
+        'settings:read', 'settings:write',
+        'superadmin:read', 'superadmin:write',
+        'tenants:read', 'tenants:write', 'tenants:delete',
+    ],
     Admin: [
         'dashboard:read',
         'vehicles:read', 'vehicles:write', 'vehicles:delete',
@@ -54,6 +68,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
 
 // Descripciones de roles para UI
 export const ROLE_INFO: Record<UserRole, { label: string; color: string; description: string }> = {
+    SuperAdmin: { label: 'Super Admin', color: '#9c27b0', description: 'Gestión global del SaaS' },
     Admin: { label: 'Administrador', color: '#f44336', description: 'Acceso total al sistema' },
     Gerente: { label: 'Gerente', color: '#2196f3', description: 'Gestión de flota y reportes' },
     Asistente: { label: 'Asistente', color: '#4caf50', description: 'Consulta de información' },

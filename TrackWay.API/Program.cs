@@ -8,6 +8,7 @@ using TrackWay.Infrastructure.Persistence;
 using TrackWay.Infrastructure.Repositories;
 using TrackWay.Infrastructure.Services;
 using TrackWay.Application.Auth.Handlers;
+using TrackWay.Application.SuperAdmin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,9 @@ builder.Services.AddDbContext<TrackWayDbContext>(options =>
 
 // Registrar IAuthDbContext
 builder.Services.AddScoped<IAuthDbContext>(sp => sp.GetRequiredService<TrackWayDbContext>());
+
+// Registrar ISaaSDbContext
+builder.Services.AddScoped<ISaaSDbContext>(sp => sp.GetRequiredService<TrackWayDbContext>());
 
 // ============ Repository Pattern + UoW ============
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -32,7 +32,6 @@ import {
     CheckCircle,
     AccessTime,
     FilterList,
-    Person,
 } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -42,7 +41,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useModuleAccess, AccessDeniedPage } from '../components/AccessControl';
 
 const DriversPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t: _t } = useTranslation();
     const theme = useTheme();
     const { canRead } = useAuth();
     const { canCreate, canEdit, canRemove } = useModuleAccess('drivers');
@@ -97,10 +96,10 @@ const DriversPage: React.FC = () => {
             minWidth: 250,
             renderCell: (params: GridRenderCellParams) => (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Avatar 
-                        sx={{ 
-                            width: 42, 
-                            height: 42, 
+                    <Avatar
+                        sx={{
+                            width: 42,
+                            height: 42,
                             background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                             fontSize: 16,
                             fontWeight: 700,
@@ -137,9 +136,9 @@ const DriversPage: React.FC = () => {
             align: 'center',
             headerAlign: 'center',
             renderCell: (params: GridRenderCellParams) => (
-                <Chip 
-                    label={params.value || 'N/A'} 
-                    size="small" 
+                <Chip
+                    label={params.value || 'N/A'}
+                    size="small"
                     sx={{
                         fontWeight: 700,
                         bgcolor: alpha(theme.palette.primary.main, 0.1),
@@ -162,9 +161,9 @@ const DriversPage: React.FC = () => {
 
                 return (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <AccessTime sx={{ 
-                            fontSize: 18, 
-                            color: isExpired ? 'error.main' : isExpiringSoon ? 'warning.main' : 'text.secondary' 
+                        <AccessTime sx={{
+                            fontSize: 18,
+                            color: isExpired ? 'error.main' : isExpiringSoon ? 'warning.main' : 'text.secondary'
                         }} />
                         <Box>
                             <Typography fontSize={14}>{fecha}</Typography>
@@ -281,9 +280,10 @@ const DriversPage: React.FC = () => {
     ];
 
     // Extraer datos
-    const responseData = data?.data;
-    const drivers = responseData?.items || responseData?.data?.items || [];
-    const totalCount = responseData?.totalCount || responseData?.data?.totalCount || drivers.length;
+    const apiResponse = data?.data;
+    const pagedResult = apiResponse?.data;
+    const drivers = pagedResult?.items || [];
+    const totalCount = pagedResult?.totalCount || drivers.length;
     const alerts = alertsData?.data?.data || alertsData?.data || [];
 
     // Stats
@@ -308,7 +308,7 @@ const DriversPage: React.FC = () => {
             >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
                     <Box>
-                        <Typography variant="h4" fontWeight={800} sx={{ 
+                        <Typography variant="h4" fontWeight={800} sx={{
                             background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
                             backgroundClip: 'text',
                             WebkitBackgroundClip: 'text',
@@ -349,7 +349,7 @@ const DriversPage: React.FC = () => {
             {/* Stats Cards */}
             <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid size={{ xs: 12, sm: 4 }}>
-                    <Card sx={{ 
+                    <Card sx={{
                         background: `linear-gradient(135deg, ${alpha('#6c5ce7', 0.15)} 0%, ${alpha('#6c5ce7', 0.05)} 100%)`,
                         border: `1px solid ${alpha('#6c5ce7', 0.2)}`,
                     }}>
@@ -367,7 +367,7 @@ const DriversPage: React.FC = () => {
                     </Card>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }}>
-                    <Card sx={{ 
+                    <Card sx={{
                         background: `linear-gradient(135deg, ${alpha('#00d4aa', 0.15)} 0%, ${alpha('#00d4aa', 0.05)} 100%)`,
                         border: `1px solid ${alpha('#00d4aa', 0.2)}`,
                     }}>
@@ -385,7 +385,7 @@ const DriversPage: React.FC = () => {
                     </Card>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }}>
-                    <Card sx={{ 
+                    <Card sx={{
                         background: `linear-gradient(135deg, ${alpha('#ff9800', 0.15)} 0%, ${alpha('#ff9800', 0.05)} 100%)`,
                         border: `1px solid ${alpha('#ff9800', 0.2)}`,
                     }}>
@@ -418,7 +418,7 @@ const DriversPage: React.FC = () => {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         size="small"
-                        sx={{ 
+                        sx={{
                             minWidth: 350,
                             '& .MuiOutlinedInput-root': { borderRadius: 2 },
                         }}
@@ -453,11 +453,11 @@ const DriversPage: React.FC = () => {
                     getRowId={(row) => row.id}
                     sx={{
                         border: 'none',
-                        '& .MuiDataGrid-cell': { 
+                        '& .MuiDataGrid-cell': {
                             borderColor: alpha(theme.palette.divider, 0.5),
                             py: 1,
                         },
-                        '& .MuiDataGrid-columnHeaders': { 
+                        '& .MuiDataGrid-columnHeaders': {
                             bgcolor: alpha(theme.palette.secondary.main, 0.05),
                             borderBottom: `2px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
                         },

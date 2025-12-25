@@ -821,6 +821,287 @@ namespace TrackWay.Infrastructure.Migrations
                     b.ToTable("Reservaciones", "restaurante");
                 });
 
+            modelBuilder.Entity("TrackWay.Domain.Entities.SaaS.SubscriptionPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ColorHex")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("MaxUsuarios")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxVehiculos")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("PrecioMensual")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Tier")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nombre")
+                        .IsUnique();
+
+                    b.ToTable("SubscriptionPlans", "saas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Activo = true,
+                            ColorHex = "#95a5a6",
+                            Descripcion = "Plan gratuito con funcionalidades básicas",
+                            MaxUsuarios = 3,
+                            MaxVehiculos = 5,
+                            Nombre = "Free",
+                            PrecioMensual = 0m,
+                            Tier = "Free"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Activo = true,
+                            ColorHex = "#6c5ce7",
+                            Descripcion = "Plan profesional para empresas en crecimiento",
+                            MaxUsuarios = 15,
+                            MaxVehiculos = 30,
+                            Nombre = "Pro",
+                            PrecioMensual = 49m,
+                            Tier = "Pro"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Activo = true,
+                            ColorHex = "#00d4aa",
+                            Descripcion = "Plan empresarial sin límites",
+                            MaxUsuarios = 100,
+                            MaxVehiculos = 500,
+                            Nombre = "Enterprise",
+                            PrecioMensual = 199m,
+                            Tier = "Enterprise"
+                        });
+                });
+
+            modelBuilder.Entity("TrackWay.Domain.Entities.SaaS.Tenant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Direccion")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("EmailContacto")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaDesactivacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LogoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("RUC")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Telefono")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("TotalMantenimientos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalUsuarios")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalVehiculos")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RUC")
+                        .IsUnique();
+
+                    b.ToTable("Tenants", "saas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Activo = true,
+                            EmailContacto = "contacto@transportesrapidos.com",
+                            FechaCreacion = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Transportes Rápidos SAC",
+                            RUC = "20123456789",
+                            Telefono = "01-2345678",
+                            TotalMantenimientos = 45,
+                            TotalUsuarios = 15,
+                            TotalVehiculos = 30
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Activo = true,
+                            EmailContacto = "admin@logisticaexpress.pe",
+                            FechaCreacion = new DateTime(2024, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Logística Express EIRL",
+                            RUC = "20234567890",
+                            Telefono = "01-3456789",
+                            TotalMantenimientos = 12,
+                            TotalUsuarios = 5,
+                            TotalVehiculos = 10
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Activo = true,
+                            EmailContacto = "operaciones@cargapesada.com",
+                            FechaCreacion = new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Carga Pesada Corp",
+                            RUC = "20345678901",
+                            TotalMantenimientos = 8,
+                            TotalUsuarios = 3,
+                            TotalVehiculos = 5
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Activo = false,
+                            EmailContacto = "ventas@limanorte.com",
+                            FechaCreacion = new DateTime(2024, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaDesactivacion = new DateTime(2024, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Distribuidora Lima Norte",
+                            RUC = "20456789012",
+                            Telefono = "01-4567890",
+                            TotalMantenimientos = 20,
+                            TotalUsuarios = 8,
+                            TotalVehiculos = 15
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Activo = true,
+                            EmailContacto = "info@mudanzasperu.pe",
+                            FechaCreacion = new DateTime(2024, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Mudanzas Perú SRL",
+                            RUC = "20567890123",
+                            TotalMantenimientos = 320,
+                            TotalUsuarios = 100,
+                            TotalVehiculos = 450
+                        });
+                });
+
+            modelBuilder.Entity("TrackWay.Domain.Entities.SaaS.TenantSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("FechaFin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SubscriptionPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionPlanId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("TenantSubscriptions", "saas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FechaInicio = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionPlanId = 2,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FechaInicio = new DateTime(2024, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionPlanId = 2,
+                            TenantId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FechaInicio = new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionPlanId = 1,
+                            TenantId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            FechaFin = new DateTime(2024, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2024, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionPlanId = 2,
+                            TenantId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            FechaInicio = new DateTime(2024, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionPlanId = 3,
+                            TenantId = 5
+                        });
+                });
+
             modelBuilder.Entity("TrackWay.Domain.Entities.Auth.User", b =>
                 {
                     b.HasOne("TrackWay.Domain.Entities.Auth.Role", "Role")
@@ -941,6 +1222,25 @@ namespace TrackWay.Infrastructure.Migrations
                     b.Navigation("Mesa");
                 });
 
+            modelBuilder.Entity("TrackWay.Domain.Entities.SaaS.TenantSubscription", b =>
+                {
+                    b.HasOne("TrackWay.Domain.Entities.SaaS.SubscriptionPlan", "Plan")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("SubscriptionPlanId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TrackWay.Domain.Entities.SaaS.Tenant", "Tenant")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plan");
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("TrackWay.Domain.Entities.Auth.Role", b =>
                 {
                     b.Navigation("Usuarios");
@@ -985,6 +1285,16 @@ namespace TrackWay.Infrastructure.Migrations
             modelBuilder.Entity("TrackWay.Domain.Entities.Restaurante.Producto", b =>
                 {
                     b.Navigation("DetallesOrden");
+                });
+
+            modelBuilder.Entity("TrackWay.Domain.Entities.SaaS.SubscriptionPlan", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("TrackWay.Domain.Entities.SaaS.Tenant", b =>
+                {
+                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

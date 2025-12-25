@@ -3,15 +3,17 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using TrackWay.Domain.Entities.Fleet;
 using TrackWay.Domain.Entities.Restaurante;
 using TrackWay.Domain.Entities.Auth;
+using TrackWay.Domain.Entities.SaaS;
 using TrackWay.Domain.Enums;
 using TrackWay.Application.Auth.Handlers;
+using TrackWay.Application.SuperAdmin;
 
 namespace TrackWay.Infrastructure.Persistence;
 
 /// <summary>
 /// DbContext unificado para TrackWay - Usa entidades DDD
 /// </summary>
-public class TrackWayDbContext : DbContext, IAuthDbContext
+public class TrackWayDbContext : DbContext, IAuthDbContext, ISaaSDbContext
 {
     public TrackWayDbContext(DbContextOptions<TrackWayDbContext> options) : base(options) { }
 
@@ -35,6 +37,11 @@ public class TrackWayDbContext : DbContext, IAuthDbContext
     public DbSet<DetalleOrden> DetallesOrden { get; set; } = null!;
     public DbSet<Reservacion> Reservaciones { get; set; } = null!;
 
+    // ============ SaaS Entities ============
+    public DbSet<Tenant> Tenants { get; set; } = null!;
+    public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; } = null!;
+    public DbSet<TenantSubscription> TenantSubscriptions { get; set; } = null!;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -48,6 +55,7 @@ public class TrackWayDbContext : DbContext, IAuthDbContext
         ConfigureAuthEntities(modelBuilder);
         ConfigureFleetEntities(modelBuilder);
         ConfigureRestauranteEntities(modelBuilder);
+        ConfigureSaaSEntities(modelBuilder);
     }
 
     private void ConfigureAuthEntities(ModelBuilder modelBuilder)
@@ -353,6 +361,91 @@ public class TrackWayDbContext : DbContext, IAuthDbContext
                 .WithMany(m => m.Reservaciones)
                 .HasForeignKey(e => e.MesaId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private void ConfigureSaaSEntities(ModelBuilder modelBuilder)
+    {
+        // ============ SubscriptionPlan ============
+        modelBuilder.Entity<SubscriptionPlan>(entity =>
+        {
+            entity.ToTable("SubscriptionPlans", "saas");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nombre).IsRequired().HasMaxLength(50);
+            entity.HasIndex(e => e.Nombre).IsUnique();
+            entity.Property(e => e.Descripcion).HasMaxLength(500);
+            entity.Property(e => e.PrecioMensual).HasPrecision(10, 2);
+            entity.Property(e => e.Tier).HasConversion<string>().HasMaxLength(20);
+            entity.Property(e => e.ColorHex).HasMaxLength(10);
+            
+            entity.Navigation(e => e.Subscriptions)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            
+            // Seed data - Planes por defecto
+            entity.HasData(
+                new { Id = 1, Nombre = "Free", Descripcion = "Plan gratuito con funcionalidades básicas", PrecioMensual = 0m, MaxUsuarios = 3, MaxVehiculos = 5, Tier = PlanTier.Free, Activo = true, ColorHex = "#95a5a6" },
+                new { Id = 2, Nombre = "Pro", Descripcion = "Plan profesional para empresas en crecimiento", PrecioMensual = 49m, MaxUsuarios = 15, MaxVehiculos = 30, Tier = PlanTier.Pro, Activo = true, ColorHex = "#6c5ce7" },
+                new { Id = 3, Nombre = "Enterprise", Descripcion = "Plan empresarial sin límites", PrecioMensual = 199m, MaxUsuarios = 100, MaxVehiculos = 500, Tier = PlanTier.Enterprise, Activo = true, ColorHex = "#00d4aa" }
+            );
+        });
+
+        // ============ Tenant ============
+        modelBuilder.Entity<Tenant>(entity =>
+        {
+            entity.ToTable("Tenants", "saas");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Nombre).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.RUC).IsRequired().HasMaxLength(20);
+            entity.HasIndex(e => e.RUC).IsUnique();
+            
+            entity.Property(e => e.EmailContacto).IsRequired().HasMaxLength(256);
+            entity.Property(e => e.Telefono).HasMaxLength(20);
+            entity.Property(e => e.Direccion).HasMaxLength(500);
+            entity.Property(e => e.LogoUrl).HasMaxLength(500);
+            
+            entity.Navigation(e => e.Subscriptions)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            
+            entity.Ignore(e => e.SuscripcionActiva);
+            entity.Ignore(e => e.DomainEvents);
+            
+            // Seed data - Empresas de ejemplo
+            entity.HasData(
+                new { Id = 1, Nombre = "Transportes Rápidos SAC", RUC = "20123456789", EmailContacto = "contacto@transportesrapidos.com", Telefono = "01-2345678", Activo = true, FechaCreacion = new DateTime(2024, 1, 15), TotalUsuarios = 15, TotalVehiculos = 30, TotalMantenimientos = 45 },
+                new { Id = 2, Nombre = "Logística Express EIRL", RUC = "20234567890", EmailContacto = "admin@logisticaexpress.pe", Telefono = "01-3456789", Activo = true, FechaCreacion = new DateTime(2024, 3, 22), TotalUsuarios = 5, TotalVehiculos = 10, TotalMantenimientos = 12 },
+                new { Id = 3, Nombre = "Carga Pesada Corp", RUC = "20345678901", EmailContacto = "operaciones@cargapesada.com", Activo = true, FechaCreacion = new DateTime(2024, 6, 10), TotalUsuarios = 3, TotalVehiculos = 5, TotalMantenimientos = 8 },
+                new { Id = 4, Nombre = "Distribuidora Lima Norte", RUC = "20456789012", EmailContacto = "ventas@limanorte.com", Telefono = "01-4567890", Activo = false, FechaCreacion = new DateTime(2024, 2, 28), FechaDesactivacion = new DateTime(2024, 11, 15), TotalUsuarios = 8, TotalVehiculos = 15, TotalMantenimientos = 20 },
+                new { Id = 5, Nombre = "Mudanzas Perú SRL", RUC = "20567890123", EmailContacto = "info@mudanzasperu.pe", Activo = true, FechaCreacion = new DateTime(2024, 8, 5), TotalUsuarios = 100, TotalVehiculos = 450, TotalMantenimientos = 320 }
+            );
+        });
+
+        // ============ TenantSubscription ============
+        modelBuilder.Entity<TenantSubscription>(entity =>
+        {
+            entity.ToTable("TenantSubscriptions", "saas");
+            entity.HasKey(e => e.Id);
+            
+            entity.HasOne(e => e.Tenant)
+                .WithMany(t => t.Subscriptions)
+                .HasForeignKey(e => e.TenantId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            entity.HasOne(e => e.Plan)
+                .WithMany(p => p.Subscriptions)
+                .HasForeignKey(e => e.SubscriptionPlanId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            entity.Ignore(e => e.EstaActiva);
+            
+            // Seed data - Suscripciones de ejemplo
+            entity.HasData(
+                new { Id = 1, TenantId = 1, SubscriptionPlanId = 2, FechaInicio = new DateTime(2024, 1, 15) }, // Transportes Rápidos -> Pro
+                new { Id = 2, TenantId = 2, SubscriptionPlanId = 2, FechaInicio = new DateTime(2024, 3, 22) }, // Logística Express -> Pro
+                new { Id = 3, TenantId = 3, SubscriptionPlanId = 1, FechaInicio = new DateTime(2024, 6, 10) }, // Carga Pesada -> Free
+                new { Id = 4, TenantId = 4, SubscriptionPlanId = 2, FechaInicio = new DateTime(2024, 2, 28), FechaFin = new DateTime(2024, 11, 15) }, // Distribuidora (inactiva)
+                new { Id = 5, TenantId = 5, SubscriptionPlanId = 3, FechaInicio = new DateTime(2024, 8, 5) } // Mudanzas Perú -> Enterprise
+            );
         });
     }
 }
